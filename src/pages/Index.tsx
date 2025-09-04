@@ -1,12 +1,58 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Header } from "@/components/Header";
+import { HeroSection } from "@/components/HeroSection";
+import { TemplateSelector } from "@/components/TemplateSelector";
+import { CardEditor } from "@/components/CardEditor";
+import type { Template } from "@/components/TemplateSelector";
 
 const Index = () => {
+  const [currentView, setCurrentView] = useState<"home" | "templates" | "editor">("home");
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+
+  const handleGetStarted = () => {
+    setCurrentView("templates");
+  };
+
+  const handleSelectTemplate = (template: Template) => {
+    setSelectedTemplate(template);
+    setCurrentView("editor");
+  };
+
+  const handleBackToTemplates = () => {
+    setCurrentView("templates");
+    setSelectedTemplate(null);
+  };
+
+  const handleBackToHome = () => {
+    setCurrentView("home");
+    setSelectedTemplate(null);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      {currentView === "home" && (
+        <>
+          <HeroSection onGetStarted={handleGetStarted} />
+          <div className="py-12">
+            <TemplateSelector onSelectTemplate={handleSelectTemplate} />
+          </div>
+        </>
+      )}
+      
+      {currentView === "templates" && (
+        <div className="py-12">
+          <TemplateSelector onSelectTemplate={handleSelectTemplate} />
+        </div>
+      )}
+      
+      {currentView === "editor" && selectedTemplate && (
+        <CardEditor 
+          template={selectedTemplate} 
+          onBack={handleBackToTemplates}
+        />
+      )}
     </div>
   );
 };

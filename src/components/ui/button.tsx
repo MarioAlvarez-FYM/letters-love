@@ -5,11 +5,11 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft hover:shadow-card",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -18,6 +18,12 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        hero: "bg-gradient-love text-white font-semibold hover:scale-105 hover:shadow-floating transition-bounce border-0",
+        love: "bg-love text-white hover:bg-love/90 shadow-soft hover:shadow-card",
+        friendship: "bg-friendship text-white hover:bg-friendship/90 shadow-soft hover:shadow-card",
+        gratitude: "bg-gratitude text-foreground hover:bg-gratitude/90 shadow-soft hover:shadow-card",
+        inspiration: "bg-inspiration text-foreground hover:bg-inspiration/90 shadow-soft hover:shadow-card",
+        template: "bg-card border-2 border-border hover:border-primary/50 hover:shadow-card transition-smooth text-card-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",
