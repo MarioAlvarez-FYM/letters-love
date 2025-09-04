@@ -5,11 +5,12 @@ import { Heart, Users, Gift, Lightbulb, Smile, Cake, Plus } from "lucide-react";
 import templateLove from "@/assets/template-love.jpg";
 import templateFriendship from "@/assets/template-friendship.jpg";
 import templateGratitude from "@/assets/template-gratitude.jpg";
+import templateDragons from "@/assets/template-dragons.jpg";
 
 interface Template {
   id: string;
   name: string;
-  category: "love" | "friendship" | "gratitude" | "inspiration" | "humor" | "birthday" | "blank";
+  category: "love" | "friendship" | "gratitude" | "inspiration" | "humor" | "birthday" | "adventure" | "blank";
   icon: React.ReactNode;
   color: string;
   description: string;
@@ -67,6 +68,15 @@ const templates: Template[] = [
     icon: <Cake className="h-5 w-5" />,
     color: "secondary",
     description: "Celebra un día especial"
+  },
+  {
+    id: "dragons-1",
+    name: "Dragones Mágicos",
+    category: "adventure",
+    icon: <Heart className="h-5 w-5" />,
+    color: "primary",
+    description: "Aventuras épicas con dragones amigables",
+    image: templateDragons
   },
   {
     id: "blank",
