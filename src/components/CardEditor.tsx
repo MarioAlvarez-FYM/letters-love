@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +14,10 @@ import {
   Underline,
   AlignLeft,
   AlignCenter,
-  AlignRight
+  AlignRight,
+  Image,
+  Upload,
+  X
 } from "lucide-react";
 import type { Template } from "./TemplateSelector";
 
@@ -47,6 +50,8 @@ export const CardEditor = ({ template, onBack }: CardEditorProps) => {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(template.image || null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const getTextStyles = () => {
     let styles = `${selectedFont} ${selectedColor} ${textAlign}`;
@@ -66,6 +71,24 @@ export const CardEditor = ({ template, onBack }: CardEditorProps) => {
     
     const randomText = sampleTexts[Math.floor(Math.random() * sampleTexts.length)];
     setCardText(randomText);
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setBackgroundImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeBackgroundImage = () => {
+    setBackgroundImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -215,6 +238,54 @@ export const CardEditor = ({ template, onBack }: CardEditorProps) => {
                 ))}
               </div>
             </Card>
+            <Card className="p-6">
+              <h3 className="text-lg font-display font-semibold mb-4 flex items-center gap-2">
+                <Image className="h-5 w-5 text-primary" />
+                Fondo de la carta
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    Subir imagen
+                  </Button>
+                  
+                  {backgroundImage && (
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={removeBackgroundImage}
+                      className="text-destructive hover:text-destructive"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+                
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+                
+                {backgroundImage && (
+                  <div className="relative">
+                    <img 
+                      src={backgroundImage} 
+                      alt="Background preview" 
+                      className="w-full h-20 object-cover rounded-lg border"
+                    />
+                  </div>
+                )}
+              </div>
+            </Card>
           </div>
 
           {/* Preview Panel */}
@@ -228,12 +299,12 @@ export const CardEditor = ({ template, onBack }: CardEditorProps) => {
                 <div 
                   className="aspect-[3/4] relative rounded-2xl overflow-hidden shadow-floating"
                   style={{
-                    backgroundImage: template.image ? `url(${template.image})` : undefined,
+                    backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                   }}
                 >
-                  {!template.image && (
+                  {!backgroundImage && (
                     <div className={`w-full h-full bg-gradient-${template.color}`} />
                   )}
                   
